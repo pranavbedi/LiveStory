@@ -4,6 +4,8 @@ import first_pig_talking from "./lottie-animations/first-pig-talking.json";
 import first_pig_thinking from "./lottie-animations/first-pig-thinking.json";
 import second_pig_talking from "./lottie-animations/second-pig-talking.json";
 import second_pig_thinking from "./lottie-animations/second-pig-thinking.json";
+import third_pig_talking from "./lottie-animations/third-pig-talking.json";
+import third_pig_thinking from "./lottie-animations/third-pig-thinking.json";
 
 // EXAMPLE FOR LOADING LOTTIE ANIMS, RETURNS AS REACT COMPONENT
 
@@ -17,7 +19,11 @@ const Example = () => {
         <h3>Second Pig</h3>
         <Lottie animationData={second_pig_talking} />;
         <Lottie animationData={second_pig_thinking} />;
+        <h3>Third Pig</h3>
+        <Lottie animationData={third_pig_talking} />;
+        <Lottie animationData={third_pig_thinking} />;
     </div>
+
     
 };
 
