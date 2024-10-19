@@ -1,20 +1,13 @@
-"""Welcome to Reflex! This file outlines the steps to create a basic app."""
-
 import reflex as rx
-
 from rxconfig import config
-
-
-
+from .pages.story_page import story
 
 class State(rx.State):
     """The app state."""
-
     ...
 
-
 def index() -> rx.Component:
-    # Welcome Page (Index)
+    # Landing page
     return rx.container(
         rx.color_mode.button(position="top-right"),
         rx.vstack(
@@ -23,11 +16,7 @@ def index() -> rx.Component:
                 width="1920x",
                 height="auto",
             ),
-            rx.link(
-                rx.button("Check out our docs!"),
-                href="https://reflex.dev/docs/getting-started/introduction/",
-                is_external=True,
-            ),
+            rx.link(rx.button("Switch to Story"), href="/story"),
             spacing="5",
             justify="center",
             min_height="85vh",
@@ -35,6 +24,6 @@ def index() -> rx.Component:
         rx.logo(),
     )
 
-
 app = rx.App()
 app.add_page(index)
+app.add_page(story, route="/story") 
