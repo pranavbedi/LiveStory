@@ -67,7 +67,6 @@ const VOICE_AND_ANIMATION_DATA = {
     "third-pig": `
     You are the Third Pig, an intelligent and patient character. You provide wise advice and think carefully before acting. You speak slowly and thoughtfully.
     Your goal is to guide others toward the best solution. You have two younger brothers, who you care very much for and want to help grow into mature, intelligent pigs.
-    You try not to speak about yourself often, unless asked.
     
     Your youngest brother, the First Pig, is scared and wimpy. He panics often, and you feel responsible for him.
     Your second-youngest brother, the Second Pig, is very cocky and overconfident.
@@ -98,7 +97,6 @@ const VOICE_AND_ANIMATION_DATA = {
 function CharacterComponent({ storyID, page, character }) {
   const [charData, setCharData] = useState(null);
   const [onCall, setCallState] = useState(false);
-  const [vapiInitialized, setVapiInitialized] = useState(false);
 
   const vapiKey = "ca83ff8e-21f7-47b2-8f81-c7812d203ad7";
   const vapiRef = useRef(null);
@@ -118,6 +116,7 @@ function CharacterComponent({ storyID, page, character }) {
 
   useEffect(() => {
     const getAnimationByPath = async (talkingPath, thinkingPath) => {
+      setLoading(true);
       try {
         const talking_response = await fetch(talkingPath);
         const thinking_response = await fetch(thinkingPath);
@@ -133,6 +132,16 @@ function CharacterComponent({ storyID, page, character }) {
       }
     };
 
+    const getPageRelevants = async (page) => {
+      try {
+        const response = await fetch(`http://localhost:8000/getPages/${page}`);
+        const data = await response.json();
+        setCharData(data);
+      } catch (error) {
+        console.error('Error fetching page data:', error);
+      }
+    }
+
     vapiRef.current.on('speech-start', () => {
       console.log('Speech has started');
       setIsTalking(true);
@@ -147,6 +156,7 @@ function CharacterComponent({ storyID, page, character }) {
       VOICE_AND_ANIMATION_DATA["characters"][character]["animations"]["talking"],
       VOICE_AND_ANIMATION_DATA["characters"][character]["animations"]["thinking"]
     );
+    getPageRelevants(page);
   }, []);
 
   async function toggleCall() {
@@ -168,7 +178,7 @@ function CharacterComponent({ storyID, page, character }) {
             messages: [
               {
                 role: "system",
-                content: VOICE_AND_ANIMATION_DATA["prompts"][character] + VOICE_AND_ANIMATION_DATA["prompts"]["general-formatting"],
+                content: VOICE_AND_ANIMATION_DATA["prompts"][character] + VOICE_AND_ANIMATION_DATA["prompts"]["general-formatting"] + charData["characters"][character]["messages"]["content"],
               },
             ],
           },
@@ -191,15 +201,22 @@ function CharacterComponent({ storyID, page, character }) {
   }
 
   return (
-    <div>
-      <div onClick={toggleCall} style={{ cursor: 'pointer', width: '300px', margin: '0 auto' }}>
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={isTalking ? talkingAnimation : thinkingAnimation}
-          loop={true}
-          style={{ width: '100%', height: 'auto' }}
+    <div onClick={toggleCall} style={{ cursor: 'pointer', width: '300px', margin: '0 auto' }}>
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={isTalking ? talkingAnimation : thinkingAnimation}
+        loop={true}
+        style={{ width: '100%', height: 'auto', display: onCall ? 'block' : 'none' }} // Control visibility with CSS
+      />
+      {charData ? (
+        <img 
+          src={charData.characters[character].poses[0]} // Ensure charData is defined
+          alt="Description of the image" 
+          style={{ width: '100%', height: 'auto', display: onCall ? 'none' : 'block' }} // Control visibility with CSS
         />
-      </div>
+      ) : (
+        <div>Loading character image...</div> // Fallback while waiting for charData
+      )}
     </div>
   );
 }
