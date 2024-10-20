@@ -1,29 +1,46 @@
 import reflex as rx
 from rxconfig import config
 from .pages.story_page import story
+from .getPages import get_page
+
+from .lottie_component import lottie_example
 
 class State(rx.State):
     """The app state."""
     ...
 
+
 def index() -> rx.Component:
     # Landing page
-    return rx.container(
+    return rx.vstack(
         rx.color_mode.button(position="top-right"),
-        rx.vstack(
-            rx.image(
-                src="background.jpg",
-                width="1920x",
-                height="auto",
-            ),
-            rx.link(rx.button("Switch to Story"), href="/story"),
-            spacing="5",
-            justify="center",
-            min_height="85vh",
+        rx.text("Story Book",
+            font_size="5vh",
+            font_family="Comic Sans MS",
+            text_align="center",
+            padding="10px"
         ),
-        rx.logo(),
+        rx.center(
+            rx.link(
+                rx.image(
+                    src="ThreeLittlePigs.png",
+                    width="60%",
+                    height="auto",
+                    margin="auto",
+                    border_radius="1.5em",
+                ),
+                href="/story",
+            ),
+            width="100%",
+        ),
+        lottie_example(),
+        spacing="5",
+        align="center",
+        justify="center",
+        height="100vh",
     )
 
 app = rx.App()
 app.add_page(index)
 app.add_page(story, route="/story") 
+app.api.add_api_route("/getPages/{pageIndex}", get_page)
