@@ -167,11 +167,11 @@ def story():
                 rx.flex(
                     rx.image(
                         src=StoryState.background_image,
-                        width="95%",
-                        height="auto",
-                        margin_top="20px",
+                        width="auto",
+                        height="80%",
+                        margin_top="13px",
                         object_fit="contain",
-                        border_radius="1.5em",
+                        border_radius="1.2em",
                     ),
                     rx.vstack(
                         rx.progress(value=StoryState.progress, width="100%", color_scheme="brown"),
