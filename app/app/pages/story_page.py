@@ -4,6 +4,14 @@ from ..characterComponent import InteractableCharacter
 from ..getPages import get_page
 from typing import List, Union
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+VAPI_KEY = os.getenv("VAPI_KEY")
+if VAPI_KEY is None:
+    raise ValueError("VAPI_KEY environment variable is not set")
+
 class StoryState(rx.State):
     current_page: int = 1
     story_content: str = "Once upon a time, there is three little pigs and a big bad wolf."
@@ -76,6 +84,7 @@ def moveableCharacter(charID, top, left):
     is_clicked = StoryState.clicked_character == charID
     return rx.box(
         InteractableCharacter(
+            passedVapiKey=VAPI_KEY,
             storyID="threeLittlePigs",
             page=StoryState.current_page,
             character=charID

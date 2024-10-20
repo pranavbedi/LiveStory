@@ -9,8 +9,7 @@ class InteractableCharacter(Component):
     lib_dependencies: List[str] = ["lottie-react", "lottie-web", "@vapi-ai/web"]
 
     # Arguments
-    vapiKey: rx.Var[str]
-    storyID: rx.Var[str]
+    passedVapiKey: rx.Var[str]
     page: rx.Var[int]
     character: rx.Var[str]
     is_talking: rx.Var[bool]

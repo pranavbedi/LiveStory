@@ -94,11 +94,10 @@ const VOICE_AND_ANIMATION_DATA = {
  * 
  * Accesses this via a storyID, page (for context), and character.
  */
-function CharacterComponent({ storyID, page, character, onTalkingStart, onTalkingEnd }) {
+function CharacterComponent({ passedVapiKey, page, character, onTalkingStart, onTalkingEnd }) {
   const [charData, setCharData] = useState(null);
   const [onCall, setCallState] = useState(false);
-
-  const vapiKey = "ca83ff8e-21f7-47b2-8f81-c7812d203ad7";
+  const vapiKey = passedVapiKey;
   const vapiRef = useRef(null);
   const lottieRef = useRef();
 
