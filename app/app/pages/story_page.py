@@ -1,48 +1,78 @@
 import reflex as rx
 from reflex.state import State
+from ..characterComponent import InteractableCharacter
+from ..getPages import get_page
 
 class StoryState(rx.State):
-    current_page: int = 0
-    story_pages = [
-    "Once upon a time, three little pigs built their own houses.",
-    "The first pig made a house of straw.",
-    "The second pig built his house from sticks.",
-    "The third pig used bricks for his house.",
-    "One day, a big bad wolf came to the straw house.",
-    "“Let me in!” said the wolf.",
-    "“Not by the hair on my chinny chin chin!” cried the first pig.",
-    "The wolf huffed and puffed and blew the straw house down!",
-    "The first pig ran to his brother's stick house.",
-    "The wolf followed and blew the stick house down too!",
-    "The two pigs ran to their brother's brick house.",
-    "The wolf huffed and puffed, but he couldn’t blow the brick house down!",
-    "Angry, the wolf tried to sneak down the chimney.",
-    "But the third pig had a pot of hot stew boiling.",
-    "The wolf fell in and ran away, never to return.",
-    "The three pigs lived happily ever after."
-    ]
+    current_page: int = 1
+    story_content: str = ""
+    background_image: str = "../backgrounds/1.jpg"
+    background_opacity: float = 0.5
 
+    async def set_page_content(self):
+        page_data = await get_page(self.current_page)
+        self.story_content = page_data["story"]
+        self.background_image = f"/backgrounds/{self.current_page}.jpg"
 
-    def next_page(self):
-        if self.current_page < len(self.story_pages) - 1:
+    async def next_page(self):
+        if self.current_page < 15:  # 15 pages total
             self.current_page += 1
+            await self.set_page_content()
 
-    def previous_page(self):
-        if self.current_page > 0:
+    async def previous_page(self):
+        if self.current_page > 1:
             self.current_page -= 1
+            await self.set_page_content()
 
     def is_last_page(self) -> bool:
-        return self.current_page >= len(self.story_pages) - 1
+        return self.current_page >= 15  # 15 pages total
 
     def is_first_page(self) -> bool:
-        return self.current_page == 0
+        return self.current_page == 1
 
     @rx.var
     def progress(self) -> int:
-        return int((self.current_page / (len(self.story_pages) - 1)) * 100)
+        return int((self.current_page / 15) * 100)
 
 def story():
     return rx.container(
+        rx.hstack(
+            rx.box(
+                InteractableCharacter(
+                    storyID="threeLittlePigs",
+                    page=StoryState.current_page,
+                    character="third-pig"
+
+                ),
+                
+            ),
+            rx.box(
+                InteractableCharacter(
+                    storyID="threeLittlePigs",
+                    page=StoryState.current_page,
+                    character="third-pig"
+
+                ),
+                
+            ),
+            rx.box(
+                InteractableCharacter(
+                    storyID="threeLittlePigs",
+                    page=StoryState.current_page,
+                    character="third-pig"
+
+                ),
+                
+            ),
+            on_mount=StoryState.set_page_content,
+            position="absolute",
+            z_index="4",
+            top="45%",
+            left="25%",
+            transform="translateX(-50%)",
+            width="30vw",
+            height="auto"
+        ),
         rx.box(
             rx.image(
                 src="../pigsBackGround.png",
@@ -56,7 +86,7 @@ def story():
                 left="0",
                 right="0",
                 bottom="0",
-                background_color="rgba(255, 255, 255, 0.5)",  # Adjust the opacity as needed
+                background_color=f"rgba(255, 255, 255, {StoryState.background_opacity})",
             ),
             position="fixed",
             top="0",
@@ -66,23 +96,14 @@ def story():
             z_index="-1",
         ),
         rx.link(
-            rx.button("Back to Lobby"),
+            rx.button("Back to Lobby", font_weight="bold", font_size="1em", font_family="Comic Sans MS"),
             href="/",
             position="fixed",
             top="30px",
-            left="15px",
+            left="20px",
             height="10px",
             z_index="10",
             color_scheme="brown",
-        ),
-        rx.image(
-            src="../wolf.png",
-            width="auto",
-            height="10vh",  # Adjust this value as needed
-            position="absolute",
-            z_index="1",  # This ensures the wolf appears on top
-            align="center",
-            transform="translateX(-50%)",
         ),
         rx.flex(
             rx.box(
@@ -108,8 +129,8 @@ def story():
             rx.box(
                 rx.flex(
                     rx.image(
-                        src="../threePigs.png",
-                        width="90%",
+                        src=StoryState.background_image,
+                        width="95%",
                         height="auto",
                         margin_top="20px",
                         object_fit="contain",
@@ -117,15 +138,16 @@ def story():
                     ),
                     rx.vstack(
                         rx.progress(value=StoryState.progress, width="100%", color_scheme="brown"),
-                        width="90%",
+                        width="95%",
                     ),
                     rx.text(
-                        StoryState.story_pages[StoryState.current_page],
-                        font_size="2.5vh",
-                        font_family="Comic Sans MS",
+                        StoryState.story_content,
+                        font_size="3.5vh",
+                        font_family="serrif",
                         text_align="center",
+                        color="black",
                         background_color="rgba(255, 255, 255, 0.7)",
-                        padding="15px",
+                        padding="25px",
                     ),
                     direction="column",
                     align="center",
@@ -133,7 +155,7 @@ def story():
                     width="100%",
                     height="100%",
                 ),
-                width="70vw",
+                width="85vw",
                 height="85vh",
                 align="center",
                 justify="center",
