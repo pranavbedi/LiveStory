@@ -3,7 +3,7 @@ from rxconfig import config
 from .pages.story_page import story
 from .getPages import get_page
 
-from .lottie_component import lottie_example
+from .characterComponent import InteractableCharacter
 
 class State(rx.State):
     """The app state."""
@@ -33,7 +33,6 @@ def index() -> rx.Component:
             ),
             width="100%",
         ),
-        lottie_example(),
         spacing="5",
         align="center",
         justify="center",
