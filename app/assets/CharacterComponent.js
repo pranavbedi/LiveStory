@@ -173,6 +173,7 @@ function CharacterComponent({ storyID, page, character, onTalkingStart, onTalkin
   }, [onTalkingStart, onTalkingEnd, page]);
 
   async function toggleCall() {
+    setCallState(!onCall);
     if (onCall) {
       // Stop the call
       vapiRef.current.stop();
@@ -201,11 +202,10 @@ function CharacterComponent({ storyID, page, character, onTalkingStart, onTalkin
           }
         });
       } catch {
+        setCallState(!onCall); // set it back
         console.log("Failed to start VapiRef");
       }
     }
-    // Toggle the call state
-    setCallState(!onCall);
   }
 
 
