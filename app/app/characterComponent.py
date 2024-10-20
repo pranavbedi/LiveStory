@@ -13,5 +13,8 @@ class InteractableCharacter(Component):
     storyID: rx.Var[str]
     page: rx.Var[int]
     character: rx.Var[str]
+    is_talking: rx.Var[bool]
+    on_talking_start: rx.EventHandler
+    on_talking_end: rx.EventHandler
 
 interactable_character = InteractableCharacter.create
