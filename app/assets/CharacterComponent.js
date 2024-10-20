@@ -79,7 +79,7 @@ const VOICE_AND_ANIMATION_DATA = {
     "general-formatting": `
     Please respond as the character using simple, clear language.
     Avoid complex words or phrases that might be hard for a child to understand.
-    Please respond as the character without any stage directions or non-verbal cues. Focus on clear and conversational dialogue that conveys your personality.
+    Respond as the character without any stage directions or non-verbal cues. Focus on clear and conversational dialogue that conveys your personality.
     `
   }
 }
@@ -94,7 +94,7 @@ const VOICE_AND_ANIMATION_DATA = {
  * 
  * Accesses this via a storyID, page (for context), and character.
  */
-function CharacterComponent({ storyID, page, character }) {
+function CharacterComponent({ storyID, page, character, onTalkingStart, onTalkingEnd }) {
   const [charData, setCharData] = useState(null);
   const [onCall, setCallState] = useState(false);
 
@@ -142,22 +142,35 @@ function CharacterComponent({ storyID, page, character }) {
       }
     }
 
-    vapiRef.current.on('speech-start', () => {
-      console.log('Speech has started');
-      setIsTalking(true);
-    });
-    
-    vapiRef.current.on('speech-end', () => {
-      console.log('Speech has ended');
-      setIsTalking(false);
-    });
-
     getAnimationByPath(
       VOICE_AND_ANIMATION_DATA["characters"][character]["animations"]["talking"],
       VOICE_AND_ANIMATION_DATA["characters"][character]["animations"]["thinking"]
     );
     getPageRelevants(page);
-  }, []);
+
+    const handleSpeechStart = () => {
+      console.log('Speech has started');
+      setIsTalking(true);
+      if (onTalkingStart) onTalkingStart();
+    };
+  
+    const handleSpeechEnd = () => {
+      console.log('Speech has ended');
+      setIsTalking(false);
+      if (onTalkingEnd) onTalkingEnd();
+    };
+    
+    // Add listeners
+    vapiRef.current.on('speech-start', handleSpeechStart);
+    vapiRef.current.on('speech-end', handleSpeechEnd);
+
+    // Cleanup listeners on unmount or when dependencies change
+    return () => {
+      vapiRef.current.off('speech-start', handleSpeechStart);
+      vapiRef.current.off('speech-end', handleSpeechEnd);
+    };
+
+  }, [onTalkingStart, onTalkingEnd, page]);
 
   async function toggleCall() {
     if (onCall) {
@@ -199,7 +212,6 @@ function CharacterComponent({ storyID, page, character }) {
   if (loading) {
     return <div>Loading animations...</div>; // Show loading state while fetching
   }
-
   return (
     <div onClick={toggleCall} style={{ cursor: 'pointer', width: '300px', margin: '0 auto' }}>
       <Lottie
@@ -208,14 +220,14 @@ function CharacterComponent({ storyID, page, character }) {
         loop={true}
         style={{ width: '100%', height: 'auto', display: onCall ? 'block' : 'none' }} // Control visibility with CSS
       />
-      {charData ? (
+      {charData && charData.characters[character] && charData.characters[character].poses ? (
         <img 
-          src={charData.characters[character].poses[0]} // Ensure charData is defined
+          src={charData.characters[character].poses[0]} 
           alt="Description of the image" 
-          style={{ width: '100%', height: 'auto', display: onCall ? 'none' : 'block' }} // Control visibility with CSS
+          style={{ width: '100%', height: 'auto', display: onCall ? 'none' : 'block' }}
         />
       ) : (
-        <div>Loading character image...</div> // Fallback while waiting for charData
+        <div>Loading character image...</div>
       )}
     </div>
   );
