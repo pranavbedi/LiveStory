@@ -85,8 +85,9 @@ def moveableCharacter(charID, top, left):
         left=f"{left}px",
         z_index="10",
         on_click=lambda: StoryState.character_clicked(charID),
-        transform=rx.cond(is_clicked, "scale(1.5)", "scale(1)"),
-        filter=rx.cond((StoryState.clicked_character != "") & (StoryState.clicked_character != charID), "blur(10px)", "none")
+        filter=rx.cond((StoryState.clicked_character != "") & (StoryState.clicked_character != charID), "blur(10px)", "none"),
+        transform=rx.cond(is_clicked, "scale(2)", "scale(1)"),
+        transition="transform 0.75s ease-in-out",
     )
 
 def story():
