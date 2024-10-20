@@ -1,5 +1,5 @@
 CHARACTERS = {
-    "first_pig": {
+    "first-pig": {
         # Return animations
         "animations": {
             "talking": "./lottie-animations/first-pig-talking.json",
@@ -14,11 +14,11 @@ async def get_page(pageIndex: int):
     
     if pageIndex == 1:
         data = {
-            "story": "Once upon a time, there is three little pigs and a big bad wolf.",
+            "story": "Once upon a time, there were three little pigs and a big bad wolf.",
             "context": "",
             "characters": {
-                "first_pig": {
-                    "poses": ["/pigs/first-running.png"],
+                "first-pig": {
+                    "poses": ["/pigs/first-standing.png"],
                     "messages": {
                         "role": "first little pig",
                         "content": "You only know Once upon a time, there is three little pigs and a big bad wolf. Do not provide answers to any question that can spoil the rest of the story."
@@ -27,7 +27,7 @@ async def get_page(pageIndex: int):
                     "name": "first little pig"
                 },
                 "second-pig": {
-                    "poses": ["./second-running.png"],
+                    "poses": ["/pigs/second-standing.png"],
                     "messages": {
                         "role": "second little pig",
                         "content": "You only know Once upon a time, there is three little pigs and a big bad wolf. Do not provide answers to any question that can spoil the rest of the story."
@@ -36,7 +36,7 @@ async def get_page(pageIndex: int):
                     "pig_voice": "alkdfjeajvneeaohadfjk"
                 },
                 "third-pig": {
-                    "poses": ["/pigs/third-running.png"],
+                    "poses": ["/pigs/third-standing.png"],
                     "messages": {
                         "role": "third little pig",
                         "content": "You only know Once upon a time, there is three little pigs and a big bad wolf. Do not provide answers to any question that can spoil the rest of the story."
@@ -44,8 +44,7 @@ async def get_page(pageIndex: int):
                     "firstMessage": "Hi… I’m the pig who built my house out of bricks.",
                     "pig_voice": "alkdfjeajvneeaohadfjk"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 2:
@@ -53,7 +52,7 @@ async def get_page(pageIndex: int):
             "story": "The first pig made a house of straw.",
             "context": "Once upon a time, three little pigs built their own houses.",
             "characters": {
-                "first_pig": {
+                "first-pig": {
                     "poses": ["/pigs/first-standing.png"],
                     "messages": {
                         "role": "first little pig",
@@ -61,8 +60,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Hi… I’m the pig who built my house out of straw. I hope it will be strong enough!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 3:
@@ -78,8 +76,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Hi… I’m the pig who built my house out of sticks. It's definitely stronger than straw!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 4:
@@ -95,8 +92,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Hi… I’m the pig who built my house out of bricks. Nothing will bring it down!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 5:
@@ -112,8 +108,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Hi… I’m the biggest, baddest wolf. Let me in, little pig!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 6:
@@ -129,8 +124,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Let me in! Let me in, little pig, or I'll huff and puff!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 7:
@@ -138,16 +132,15 @@ async def get_page(pageIndex: int):
             "story": "\"Not by the hair on my chinny chin chin!\" cried the first pig.",
             "context": "Once upon a time, three little pigs built their own houses. The first pig made a house of straw. The second pig built his house from sticks. The third pig used bricks for his house. One day, a big bad wolf came to the straw house. \"Let me in!\" said the wolf.",
             "characters": {
-                "first_pig": {
-                    "poses": ["/pigs/first-standing.png"],
+                "wolf": {
+                    "poses": ["/wolf/wolf-knocking.png"],
                     "messages": {
-                        "role": "first little pig",
-                        "content": "You’re refusing to let the wolf in. Don’t reveal what happens after this point."
+                        "role": "big bad wolf",
+                        "content": "You’re demanding to be let inside, and the pig has told you no! Don’t talk about what happens after this moment."
                     },
-                    "firstMessage": "Not by the hair on my chinny chin chin! You won't get in!"
+                    "firstMessage": "Let me in! Let me in, little pig, or I'll huff and puff!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 8:
@@ -163,8 +156,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Huff! Puff! I blew the house down!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 9:
@@ -172,7 +164,7 @@ async def get_page(pageIndex: int):
             "story": "The first pig ran to his brother's stick house.",
             "context": "Once upon a time, three little pigs built their own houses. The first pig made a house of straw. The second pig built his house from sticks. The third pig used bricks for his house. One day, a big bad wolf came to the straw house. \"Let me in!\" said the wolf. \"Not by the hair on my chinny chin chin!\" cried the first pig. The wolf huffed and puffed and blew the straw house down!",
             "characters": {
-                "first_pig": {
+                "first-pig": {
                     "poses": ["/pigs/first-running.png"],
                     "messages": {
                         "role": "first little pig",
@@ -180,8 +172,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "I need to get to my brother’s house! I hope it’s stronger!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 10:
@@ -197,8 +188,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Huff! Puff! There goes the stick house too!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 11:
@@ -206,7 +196,7 @@ async def get_page(pageIndex: int):
             "story": "The two pigs ran to their brother's brick house.",
             "context": "Once upon a time, three little pigs built their own houses. The first pig made a house of straw. The second pig built his house from sticks. The third pig used bricks for his house. One day, a big bad wolf came to the straw house. \"Let me in!\" said the wolf. \"Not by the hair on my chinny chin chin!\" cried the first pig. The wolf huffed and puffed and blew the straw house down! The first pig ran to his brother's stick house. The wolf followed and blew the stick house down too!",
             "characters": {
-                "first_pig": {
+                "first-pig": {
                     "poses": ["/pigs/first-running.png"],
                     "messages": {
                         "role": "first little pig",
@@ -222,8 +212,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Let’s hope the brick house is strong enough!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 12:
@@ -239,8 +228,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Huff! Puff! But nothing happens...!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 13:
@@ -256,8 +244,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "I’ll get in through the chimney!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 14:
@@ -273,8 +260,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "The stew is ready, let’s see what happens when the wolf comes down the chimney!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     elif pageIndex == 15:
@@ -283,14 +269,14 @@ async def get_page(pageIndex: int):
             "context": "Once upon a time, three little pigs built their own houses. The first pig made a house of straw. The second pig built his house from sticks. The third pig used bricks for his house. One day, a big bad wolf came to the straw house. \"Let me in!\" said the wolf. \"Not by the hair on my chinny chin chin!\" cried the first pig. The wolf huffed and puffed and blew the straw house down! The first pig ran to his brother's stick house. The wolf followed and blew the stick house down too! The two pigs ran to their brother's brick house. The wolf huffed and puffed, but he couldn’t blow the brick house down! Angry, the wolf tried to sneak down the chimney. But the third pig had a pot of hot stew boiling.",
             "characters": {
                 "wolf": {
-                    "poses": ["/wolf/burned.png"],
+                    "poses": ["/wolf/wolf-burned.png"],
                     "messages": {
                         "role": "big bad wolf",
                         "content": "You’ve fallen into the pot and ran away. Don't mention anything else beyond this point."
                     },
                     "firstMessage": "Ouch! I’m out of here!"
                 },
-                "first_pig": {
+                "first-pig": {
                     "poses": ["/pigs/first-standing.png"],
                     "messages": {
                         "role": "first little pig",
@@ -314,8 +300,7 @@ async def get_page(pageIndex: int):
                     },
                     "firstMessage": "Hard work pays off! We’re safe now!"
                 }
-            },
-            "background": "//image/path"
+            }
         }
         
     else:
