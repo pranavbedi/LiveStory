@@ -2,16 +2,48 @@ import reflex as rx
 from reflex.state import State
 from ..characterComponent import InteractableCharacter
 from ..getPages import get_page
+from typing import List, Union
 
 class StoryState(rx.State):
     current_page: int = 1
-    story_content: str = ""
+    story_content: str = "Once upon a time, there is three little pigs and a big bad wolf."
     background_image: str = "../backgrounds/1.jpg"
     background_opacity: float = 0.5
+    clicked_character: str = ""
+    
+
+    page_data: List[List[List[Union[str, int]]]] = [
+        [["wolf"], [0, 0], [0, 0]],  # dummy data, since current_page starts at 1
+        [["first-pig", "second-pig", "third-pig"], [300, 300, 300], [200, 450, 700]],
+        [["first-pig"], [300], [300]],
+        [["second-pig"], [260], [240]],
+        [["third-pig"], [300], [300]],
+        [["wolf"], [300], [300]],
+        [["wolf"], [150], [600]],
+        [["wolf"], [150], [600]],
+        [["wolf"], [300], [100]],
+        [["first-pig"], [300], [400]],
+        [["wolf"], [250], [50]],
+        [["first-pig", "second-pig"], [300, 300], [400, 550]],
+        [["wolf"], [300], [300]],
+        [["wolf"], [80], [500]],
+        [["third-pig"], [320], [350]],
+        [["first-pig", "second-pig", "third-pig", "wolf"], [320, 310, 300, 350], [200, 300, 400, 600]]
+    ]
+
+    character_positions: List[str] = page_data[current_page][0]
+    tops: List[int] = page_data[current_page][1]
+    lefts: List[int] = page_data[current_page][2]
 
     async def set_page_content(self):
         page_data = await get_page(self.current_page)
         self.story_content = page_data["story"]
+
+        self.character_positions = self.page_data[self.current_page][0]
+        self.tops = self.page_data[self.current_page][1]
+        self.lefts = self.page_data[self.current_page][2]
+        self.clicked_character = ""
+
         self.background_image = f"/backgrounds/{self.current_page}.jpg"
 
     async def next_page(self):
@@ -33,45 +65,36 @@ class StoryState(rx.State):
     @rx.var
     def progress(self) -> int:
         return int((self.current_page / 15) * 100)
+    
+    def character_clicked(self, char_id):
+        if self.clicked_character == char_id:
+            self.clicked_character = ""
+        else:
+            self.clicked_character = char_id
+
+def moveableCharacter(charID, top, left):
+    is_clicked = StoryState.clicked_character == charID
+    return rx.box(
+        InteractableCharacter(
+            storyID="threeLittlePigs",
+            page=StoryState.current_page,
+            character=charID
+        ),
+        position="absolute",
+        top=f"{top}px",
+        left=f"{left}px",
+        z_index="10",
+        on_click=lambda: StoryState.character_clicked(charID),
+        transform=rx.cond(is_clicked, "scale(1.5)", "scale(1)"),
+        filter=rx.cond((StoryState.clicked_character != "") & (StoryState.clicked_character != charID), "blur(10px)", "none")
+    )
 
 def story():
+    is_blurred = StoryState.clicked_character != ""
     return rx.container(
-        rx.hstack(
-            rx.box(
-                InteractableCharacter(
-                    storyID="threeLittlePigs",
-                    page=StoryState.current_page,
-                    character="third-pig"
-
-                ),
-                
-            ),
-            rx.box(
-                InteractableCharacter(
-                    storyID="threeLittlePigs",
-                    page=StoryState.current_page,
-                    character="third-pig"
-
-                ),
-                
-            ),
-            rx.box(
-                InteractableCharacter(
-                    storyID="threeLittlePigs",
-                    page=StoryState.current_page,
-                    character="third-pig"
-
-                ),
-                
-            ),
-            on_mount=StoryState.set_page_content,
-            position="absolute",
-            z_index="4",
-            top="45%",
-            left="25%",
-            transform="translateX(-50%)",
-            width="30vw",
-            height="auto"
+        rx.foreach(
+            StoryState.character_positions,
+            lambda character, index: moveableCharacter(character, StoryState.tops[index], StoryState.lefts[index])
         ),
         rx.box(
             rx.image(
@@ -166,6 +189,7 @@ def story():
                 top="10%",
                 left="50%",
                 transform="translateX(-50%)",
+                filter=rx.cond(is_blurred, "blur(10px)", "none"),
             )
         )
     )
