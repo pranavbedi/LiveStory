@@ -1,5 +1,6 @@
 # LiveStory
 
+
 ## Video Demo
 [![Video Demo Of Live Story](https://img.youtube.com/vi/E7Z3YmKI0LI/0.jpg)](https://www.youtube.com/watch?v=E7Z3YmKI0LI)
 
@@ -51,5 +52,10 @@ As time is the biggest limitation during a hackathon, we would have loved to pou
 ![image](https://github.com/user-attachments/assets/7490cda9-6bf6-4014-a827-05d235bc6c36)
 
 ![image](https://github.com/user-attachments/assets/1db5c46d-37ce-4b71-818e-8d2da4d7a3f3)
+
+
+
+**Built by Connor Loi, Gen Ichihashi and Pranav Bedi**
+
 
 
