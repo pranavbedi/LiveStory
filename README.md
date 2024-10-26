@@ -16,7 +16,7 @@ Our web application was built primarily using Reflex:
 - Reflex for both frontend and backend
 - React.js for managing the database of each page and character
 - Custom assistants powered by Vapi, Groq, Deepgram, and 11Labs to simulate character interactions
-- Reflex for Deploy
+- Reflex for Deployment
 
 
 ## Challenges we ran into
